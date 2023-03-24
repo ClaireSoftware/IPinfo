@@ -9,7 +9,11 @@ from time import sleep
 
 def get_data(site):
     """a function that takes a URL, and returns a requests.models.Response
-    object associated with it, failing if not."""
+    object associated with it, failing if not.
+    Returns
+    -------
+    r
+     requests object"""
     r = ""
     try:
         r = requests.get(site)
