@@ -1,20 +1,16 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 import requests
 import json
-import rich
-from time import sleep
 
 
-def get_data(site):
+# this is a generator that yields successive functions to get IP data
+def get_data(site: str) -> requests.models.Response:
     """a function that takes a URL, and returns a requests.models.Response
     object associated with it, failing if not.
     Returns
     -------
     r
      requests object"""
-    r = ""
+    r = requests.models.Response()
     try:
         r = requests.get(site)
         r.raise_for_status()
@@ -34,7 +30,20 @@ def get_data(site):
     return r
 
 
-# this is a generator that yields successive functions to get IP data
+def return_dict(arg) -> dict[str, str]:
+    """ takes a parameter, returning it immediately if it's a valid dictionary
+    returns an empty dictionary if it's not"""
+    if type(arg) == dict:
+        return arg
+    else:
+        return {"": ""}
+
+
+def ip_to_json(ip: str) -> dict[str, str]:
+    jsondata = json.loads("{" + "\"ip\": " + "\"" + ip.strip() + "\"" + "}")
+    return return_dict(jsondata)
+
+
 def getsites():
     """A generator that yields successive methods for scraping
     JSON-formatted IP data in decreasing order of feature-richness
@@ -43,46 +52,19 @@ def getsites():
     data
         JSON object containing IP data
     """
-    def func1():
-        return json.loads(get_data("https://ipinfo.io").text)
+    def func1() -> dict[str, str]:
+        jdata = json.loads(get_data("https://ipinfo.io").text)
+        return return_dict(jdata)
 
-    def func2():
+    def func2() -> dict[str, str]:
         ip = get_data("https://ifconfig.me").text
-        return json.loads("{" + "\"ip\": " + "\"" + ip.strip() + "\"" + "}")
+        jdata = ip_to_json(ip)
+        return return_dict(jdata)
 
-    def func3():
-        ip = get_data("ip.me").text
-        return json.loads("{" + "\"ip\": " + "\"" + ip.strip() + "\"" + "}")
-
+    def func3() -> dict[str, str]:
+        ip = get_data("https://ip.me").text
+        jdata = ip_to_json(ip)
+        return return_dict(jdata)
     yield func1
     yield func2
     yield func3
-
-
-def main():
-    gs = getsites()
-    finaldata = False
-    while True:
-        try:
-            # sleep delay included as primitive form of rate-limiting
-            sleep(0.5)
-            jdata = next(gs)()
-            if (jdata.get("ip")):
-                finaldata = jdata
-                break
-        except StopIteration:
-
-            break
-
-    if not finaldata:
-        print("None of the IP sites could return even a valid IP.",
-              "Perhaps check your network connection?")
-    else:
-        rich.print(finaldata)
-
-
-if __name__ == "__main__":
-    main()
-# remove this, just using it for testing
-else:
-    main()
