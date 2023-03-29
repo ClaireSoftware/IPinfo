@@ -1,7 +1,7 @@
 # IPinfo
 A simple python program to show you your IP and some other data
 # Compatibility
-Tested on Fedora thirty-seven, OpenBSD 7.1, and Windows 10, both on an official installatoin and in an anaconda environment
+Tested on Fedora Thirty-Seven, Ubuntu-latest, Windows-latest, and OpenBSD 7.1. Tested against Pythons 3.9-3.11. 
 # Installation
 just clone the repository and pip install in the current directory  
 
