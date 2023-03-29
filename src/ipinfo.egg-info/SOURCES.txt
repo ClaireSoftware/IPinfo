@@ -4,7 +4,6 @@ setup.cfg
 setup.py
 src/ipinfo/__init__.py
 src/ipinfo/__main__.py
-src/ipinfo/ipinfo.py
 src/ipinfo/sites.py
 src/ipinfo/trysites.py
 src/ipinfo.egg-info/PKG-INFO
@@ -13,3 +12,4 @@ src/ipinfo.egg-info/dependency_links.txt
 src/ipinfo.egg-info/not-zip-safe
 src/ipinfo.egg-info/requires.txt
 src/ipinfo.egg-info/top_level.txt
+tests/test_ipinfo.py

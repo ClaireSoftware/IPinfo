@@ -1,9 +1,9 @@
 import pytest
-import rich
 import time
 from ipinfo import trysites
 from ipinfo import sites
 import requests
+
 
 @pytest.fixture(scope="session")
 def ip():
